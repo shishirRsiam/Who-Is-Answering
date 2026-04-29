@@ -28,7 +28,7 @@ function Register() {
     setLoading(true);
 
     try {
-      const response = await authService.register(formData);
+      await authService.register(formData);
       toast.success('Account created successfully! Please login.');
       navigate('/login');
     } catch (error) {

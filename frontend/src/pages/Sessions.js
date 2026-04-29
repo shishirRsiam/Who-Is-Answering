@@ -28,16 +28,6 @@ function Sessions() {
     return new Date(timestamp).toLocaleString();
   };
 
-  const calculateDuration = (index) => {
-    if (sessions[index - 1]) {
-      const current = new Date(sessions[index].timestamp);
-      const previous = new Date(sessions[index - 1].timestamp);
-      const diff = Math.abs(previous - current) / 1000;
-      return diff.toFixed(2);
-    }
-    return 'N/A';
-  };
-
   if (loading) {
     return (
       <div className="container sessions-loading">
