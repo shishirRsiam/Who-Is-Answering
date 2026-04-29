@@ -5,8 +5,8 @@ ScaleHub REST API — Views
 All class-based API views for the ScaleHub platform.
 """
 
-import socket
 import time
+import socket
 import getpass
 
 from rest_framework import status
@@ -29,11 +29,21 @@ from .serializers import (
 def _get_container_id() -> str:
     """Return the hostname of the running Docker container."""
     try:
-        # how to print system name?
-        print("System name:", getpass.getuser())
         return socket.gethostname()
     except OSError:
         return "unknown"
+
+def create_learning_session(start, user, endpoint, status="success"):
+    container_id = _get_container_id()
+
+    elapsed = time.perf_counter() - start
+    LearningSession.objects.create(
+        user=user if user else None,
+        container_id=container_id,
+        endpoint=endpoint,
+        status=status,
+        response_time=elapsed,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -45,13 +55,16 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        start = time.perf_counter()
         serializer = UserRegistrationSerializer(data=request.data)
 
         if not serializer.is_valid():
+            create_learning_session(start, request.user, "get_profile", status="error")
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = serializer.save()
 
+        create_learning_session(start, user, "register")
         return Response(
             {
                 "message": "Registration successful. Welcome to ScaleHub!",
@@ -71,8 +84,10 @@ class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        start = time.perf_counter()
         serializer = UserSerializer(request.user)
 
+        create_learning_session(start, request.user, "get_profile")
         return Response(
             {
                 "user": serializer.data,
@@ -90,6 +105,7 @@ class UpdateProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def put(self, request):
+        start = time.perf_counter()
         user = request.user
         user_profile = user.profile  # OneToOne relation — always exists after register
 
@@ -109,6 +125,8 @@ class UpdateProfileView(APIView):
         user.save()
         user_profile.save()
 
+        
+        create_learning_session(start, user, "update_profile")
         return Response(
             {
                 "message": "Profile updated successfully.",
@@ -127,12 +145,15 @@ class SessionListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        sessions = LearningSession.objects.filter(user=request.user).order_by("-timestamp")
+        start = time.perf_counter()
+        sessions = LearningSession.objects.filter(user=request.user).order_by('-updated_at')
         serializer = LearningSessionSerializer(sessions, many=True)
+        container_id = _get_container_id()
 
+        create_learning_session(start, request.user, "session_list")
         return Response({
             "sessions": serializer.data,
-            "container_id": _get_container_id(),
+            "container_id": container_id,
             "updated_at": timezone.now().isoformat(),
         })
 
@@ -146,19 +167,10 @@ class ScaleTestView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        container_id = _get_container_id()
         start = time.perf_counter()
+        container_id = _get_container_id()
 
-        if request.user.is_authenticated:
-            elapsed = time.perf_counter() - start
-            LearningSession.objects.create(
-                user=request.user,
-                container_id=container_id,
-                endpoint="scale_test",
-                status="success",
-                response_time=elapsed,
-            )
-
+        create_learning_session(start, request.user, "register")
         return Response({
             "message": "Successfully connected to ScaleHub backend!",
             "container_id": container_id,
@@ -176,7 +188,10 @@ class HealthCheckView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
+        start = time.perf_counter()
         formatted_time = time.strftime("%d %b %Y %H:%M:%S") + " UTC+6"
+
+        create_learning_session(start, request.user, "health_check")
         return Response(
             {
                 "status": "healthy",

@@ -43,4 +43,4 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 class LearningSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = LearningSession
-        fields = ['id', 'container_id', 'endpoint', 'timestamp', 'status', 'response_time']
+        fields = ['id', 'container_id', 'endpoint', 'timestamp', 'status', 'response_time', 'created_at', 'updated_at']

@@ -23,6 +23,7 @@ function Dashboard() {
     try {
       const { data } = await userService.getSessions();
       const sessions = data.sessions || [];
+      console.log('Loaded sessions:', sessions);
 
       const updateMap = {};
       sessions.forEach((s) => {
@@ -115,7 +116,7 @@ function Dashboard() {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
-              {loading ? 'Testing...' : (
+              {loading ? 'Scale Connection Testing...' : (
                 <>
                   <FaPlay className="text-xs" />
                   Test Scale Connection
