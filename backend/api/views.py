@@ -252,48 +252,50 @@ def get_sessions(request):
 # Scale Test  —  GET /api/v1/scale/test/
 # ---------------------------------------------------------------------------
 
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def scale_test(request):
-    """Trigger a scaling test and optionally record a session.
+# Import ApiView here to avoid circular imports with the serializers and models.
+from rest_framework.views import APIView
+class ScaleTestView(APIView):
+    permission_classes = [AllowAny]
+    def get(self, request):
+        """Trigger a scaling test and optionally record a session.
 
-    This is the core learning endpoint.  Every request is routed by Nginx to
-    whichever backend container has the fewest active connections at that
-    moment (least-connection load balancing).  The container hostname embedded
-    in the response lets the user watch the distribution change across calls.
+        This is the core learning endpoint.  Every request is routed by Nginx to
+        whichever backend container has the fewest active connections at that
+        moment (least-connection load balancing).  The container hostname embedded
+        in the response lets the user watch the distribution change across calls.
 
-    For authenticated users a ``LearningSession`` row is persisted, making the
-    interaction visible on the Sessions page together with its response time.
+        For authenticated users a ``LearningSession`` row is persisted, making the
+        interaction visible on the Sessions page together with its response time.
 
-    Responses
-    ---------
-    200 OK
-        ``{ message, container_id, timestamp, status: "success" }``
-    """
-    container_id = _get_container_id()
+        Responses
+        ---------
+        200 OK
+            ``{ message, container_id, timestamp, status: "success" }``
+        """
+        container_id = _get_container_id()
 
-    # Capture the wall-clock time before any database work so the recorded
-    # response_time reflects only the view's own processing cost.
-    start = time.perf_counter()
+        # Capture the wall-clock time before any database work so the recorded
+        # response_time reflects only the view's own processing cost.
+        start = time.perf_counter()
 
-    if request.user.is_authenticated:
-        elapsed = time.perf_counter() - start
-        LearningSession.objects.create(
-            user=request.user,
-            container_id=container_id,
-            endpoint="scale_test",
-            status="success",
-            response_time=elapsed,
+        if request.user.is_authenticated:
+            elapsed = time.perf_counter() - start
+            LearningSession.objects.create(
+                user=request.user,
+                container_id=container_id,
+                endpoint="scale_test",
+                status="success",
+                response_time=elapsed,
+            )
+
+        return Response(
+            {
+                "message": "Successfully connected to ScaleHub backend!",
+                "container_id": container_id,
+                "timestamp": time.time(),
+                "status": "success",
+            }
         )
-
-    return Response(
-        {
-            "message": "Successfully connected to ScaleHub backend!",
-            "container_id": container_id,
-            "timestamp": time.time(),
-            "status": "success",
-        }
-    )
 
 
 # ---------------------------------------------------------------------------

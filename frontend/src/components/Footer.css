@@ -1,6 +1,6 @@
 .footer {
-  border-top: 1px solid var(--border-color);
-  padding: 3rem 0 1rem;
+  border-top: 1px solid rgba(46, 230, 166, 0.12);
+  padding: 3.5rem 0 1.5rem;
   margin-top: 4rem;
 }
 
@@ -53,9 +53,10 @@
   height: 40px;
   align-items: center;
   justify-content: center;
-  background: var(--card-bg);
+  background: rgba(20, 27, 45, 0.9);
   border-radius: 50%;
   transition: all 0.3s ease;
+  border: 1px solid rgba(46, 230, 166, 0.12);
 }
 
 .social-links a:hover {
@@ -65,11 +66,20 @@
 }
 
 .footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   text-align: center;
   padding-top: 2rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid rgba(37, 48, 74, 0.8);
   color: var(--text-secondary);
   font-size: 0.9rem;
+}
+
+.footer-divider {
+  opacity: 0.6;
 }
 
 .heart-icon {

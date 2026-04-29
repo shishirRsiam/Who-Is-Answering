@@ -14,6 +14,6 @@ urlpatterns = [
     path('user/sessions/', views.get_sessions, name='sessions'),
     
     # Testing and Health
-    path('scale/test/', views.scale_test, name='scale_test'),
+    path('scale/test/', views.ScaleTestView.as_view(), name='scale_test'),
     path('health/', views.health_check, name='health'),
 ]
