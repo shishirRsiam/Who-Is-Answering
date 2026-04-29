@@ -64,11 +64,6 @@ chmod +x setup-db.sh
 ./setup-db.sh
 ```
 
-**Windows:**
-```batch
-setup-db.bat
-```
-
 Or manually:
 
 ```bash

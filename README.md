@@ -205,7 +205,3 @@ MIT License
 ## 🤝 Contributing
 
 Contributions welcome! Submit a Pull Request.
-
----
-
-**Made with ❤️ for learning Docker scaling and modern web development**

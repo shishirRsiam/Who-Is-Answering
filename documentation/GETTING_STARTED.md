@@ -136,11 +136,6 @@ scalehub/
 
 **Option 1: Automated Setup**
 
-**Windows:**
-```batch
-setup.bat
-```
-
 **Linux/Mac:**
 ```bash
 chmod +x setup.sh
@@ -341,8 +336,6 @@ docker-compose ps
 ```bash
 cd scalehub
 ./setup.sh  # Linux/Mac
-# or
-setup.bat   # Windows
 ```
 
 ### 2. Create an Account
@@ -529,7 +522,5 @@ This isn't just a learning project—it's:
 4. Start learning Docker scaling!
 
 ---
-
-**Made with ❤️ for learning and modern web development**
 
 **Questions? Check INSTALLATION.md or the code comments!** 🚀

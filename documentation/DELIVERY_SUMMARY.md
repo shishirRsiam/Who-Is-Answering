@@ -357,7 +357,6 @@ Required: Docker setup → ✅ Delivered + Production-grade setup
 ```bash
 cd scalehub
 ./setup.sh  # Linux/Mac
-# or setup.bat for Windows
 ```
 
 ### 2. Create Account
@@ -515,7 +514,5 @@ Everything you need is in the documentation:
 - First time? → **GETTING_STARTED.md**
 
 ---
-
-**Made with ❤️ for top 1% quality learning & development**
 
 **🎓 Ready to learn Docker scaling? Start now!** 🚀
