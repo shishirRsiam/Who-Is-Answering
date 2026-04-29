@@ -1,82 +1,157 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    @apply box-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-midnight-900 text-slate-100 font-body antialiased;
+    background:
+      radial-gradient(ellipse at 10% 0%, rgba(46, 230, 166, 0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 5%, rgba(255, 143, 63, 0.10) 0%, transparent 50%),
+      linear-gradient(180deg, #0b101b 0%, #070a12 100%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    @apply bg-tide-400/30 text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-midnight-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-white/10;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-tide-400/50;
+  }
 }
 
-:root {
-  --primary-color: #00d4ff;
-  --primary-dark: #0099cc;
-  --secondary-color: #ff006e;
-  --accent-color: #ffbe0b;
-  --dark-bg: #0a0e27;
-  --darker-bg: #050812;
-  --card-bg: #1a1f3a;
-  --text-primary: #ffffff;
-  --text-secondary: #b0b5c9;
-  --border-color: #2a3050;
-  --success-color: #00d084;
-  --error-color: #ff4757;
-  --warning-color: #ffa502;
+@layer components {
+  /* Glass morphism card */
+  .glass {
+    @apply bg-midnight-800/70 border border-white/10 backdrop-blur-md;
+  }
+
+  /* Legacy alias used in some components */
+  .glass-panel {
+    @apply bg-midnight-800/70 border border-white/10 shadow-lg backdrop-blur-md;
+  }
+
+  /* Primary gradient button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-xl bg-gradient-to-r from-tide-400 via-tide-500 to-ember-400
+           px-6 py-3 text-sm font-semibold text-midnight-900
+           shadow-glow transition-all duration-200
+           hover:shadow-glow-lg hover:brightness-110
+           disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  /* Outline button */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-xl border border-white/10 bg-white/5
+           px-6 py-3 text-sm font-semibold text-slate-200
+           transition-all duration-200
+           hover:border-tide-400/40 hover:bg-white/10
+           disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  /* Form input */
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-white/5
+           px-4 py-3 text-sm text-white placeholder:text-slate-500
+           transition-colors duration-200
+           focus:border-tide-400/60 focus:outline-none focus:ring-1 focus:ring-tide-400/30
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Section heading */
+  .section-title {
+    @apply text-xs font-semibold uppercase tracking-widest text-slate-400;
+  }
+
+  /* Stat badge */
+  .badge-success {
+    @apply rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-300;
+  }
+
+  .badge-tide {
+    @apply rounded-full border border-tide-400/25 bg-tide-400/10 px-3 py-1 text-xs font-semibold text-tide-400;
+  }
 }
 
-body {
-  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-  color: var(--text-primary);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  min-height: 100vh;
-}
+@layer utilities {
+  /* Gradient text shared across many components */
+  .gradient-text {
+    background: linear-gradient(110deg, #2ee6a6 0%, #ff8f3f 55%, #ffd166 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-html, body, #root {
-  width: 100%;
-  height: 100%;
-}
+  /* Subtle grid overlay for hero areas */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(46,230,166,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,230,166,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+  /* Glowing dot indicator — used in Footer and Dashboard */
+  .dot-active {
+    position: relative;
+    display: inline-flex;
+    height: 0.625rem;
+    width: 0.625rem;
+  }
+  .dot-active::before {
+    content: '';
+    position: absolute;
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 9999px;
+    background-color: #2ee6a6;
+    opacity: 0.6;
+    animation: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .dot-active::after {
+    content: '';
+    position: relative;
+    display: inline-flex;
+    height: 0.625rem;
+    width: 0.625rem;
+    border-radius: 9999px;
+    background-color: #2ee6a6;
+  }
+  @keyframes ping {
+    75%, 100% { transform: scale(2); opacity: 0; }
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--dark-bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-dark);
-}
-
-/* Selection */
-::selection {
-  background: var(--primary-color);
-  color: var(--darker-bg);
-}
-
-/* General Utilities */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glow-effect {
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
-}
-
-.blur-bg {
-  backdrop-filter: blur(10px);
-  background: rgba(10, 14, 39, 0.8);
+  /* Fancy border-top accent */
+  .accent-border-t {
+    border-top: 1px solid transparent;
+    background: linear-gradient(#0b101b, #0b101b) padding-box,
+                linear-gradient(90deg, #2ee6a6, #ff8f3f) border-box;
+  }
 }

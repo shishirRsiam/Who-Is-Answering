@@ -1,106 +1,15 @@
-.app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-}
+/* App-level layout helpers — most styling lives in index.css via Tailwind */
 
-.main-content {
-  flex: 1;
-  padding: 20px 0;
-}
-
-.loader-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-}
-
-.loader {
-  width: 50px;
-  height: 50px;
-  border: 4px solid var(--border-color);
-  border-top-color: var(--primary-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
+/* Spinner used in loading screens */
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-out;
-}
-
-.slide-in-left {
-  animation: slideInFromLeft 0.5s ease-out;
-}
-
-.slide-in-right {
-  animation: slideInFromRight 0.5s ease-out;
-}
-
-.pulse {
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.float {
-  animation: float 3s ease-in-out infinite;
+.spinner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #2ee6a6;
+  animation: spin 0.8s linear infinite;
 }
